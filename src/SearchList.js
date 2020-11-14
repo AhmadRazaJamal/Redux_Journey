@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Search } from './Search';
 import { List } from "./List";
 
@@ -11,8 +11,15 @@ export const SearchList = () => {
         setQuery( value );
     }
 
-    const list = [ {key: 1, name: "evee"}, {key: 2, name: "pickachu"},  {key: 3, name: "raichu"}]
+    const InitialList = [ {key: 1, name: "evee"}, {key: 2, name: "pickachu"},  {key: 3, name: "raichu"}];
+    const [list, setList ] = React.useState(InitialList);
+
+    function byArchived(event) { 
     
+        const newList = list.filter((listItem) => listItem.key != event.target.value);
+        setList(newList);
+    }
+
     return (
         <div style={{ display:"flex", marginTop:"20px"}}>
             <Search
@@ -20,7 +27,7 @@ export const SearchList = () => {
                 onChange = {onChange}
                 SearchLabel = {"SearchList"}
             />
-            <List list = {(list || []).filter(byQuery(query))} />
+            <List list = {list.filter(byQuery(query))} archiveItem={byArchived} />
         </div>
     )
 }
